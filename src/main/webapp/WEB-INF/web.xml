@@ -26,7 +26,7 @@
 
     <servlet>
         <servlet-name>buy</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.BuyController</servlet-class>
+        <servlet-class>mate.academy.internetshop.controller.AddItemToBucketController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -72,6 +72,16 @@
     <servlet-mapping>
         <servlet-name>deleteorder</servlet-name>
         <url-pattern>/servlet/deleteorder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>inject</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.InjectData</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>inject</servlet-name>
+        <url-pattern>/servlet/inject</url-pattern>
     </servlet-mapping>
 
     <listener>
