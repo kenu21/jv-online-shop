@@ -35,7 +35,7 @@ public class InjectData extends HttpServlet {
         Item iphone = new Item("iphone 11", 1000D);
         itemService.create(iphone);
 
-        User vasya = new User("Vasya");
+        User vasya = new User("Vasya", "1", "1");
         userService.create(vasya);
 
         Bucket bucket = new Bucket(vasya.getId());

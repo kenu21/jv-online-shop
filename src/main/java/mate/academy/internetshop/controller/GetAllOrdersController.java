@@ -28,13 +28,12 @@ public class GetAllOrdersController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
 
-    private static final Long USER_ID = 0L;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
 
-        List<Order> orders = orderService.getAllOrdersForUser(USER_ID);
+        List<Order> orders = orderService.getAllOrdersForUser(userId);
         req.setAttribute("orders", orders);
 
         req.setAttribute("orders", orders);
