@@ -18,5 +18,6 @@
 <a href="http://localhost:8080/internet_shop_war_exploded/servlet/getallitems">Items</a>
 <a href="http://localhost:8080/internet_shop_war_exploded/servlet/bucket">Bucket</a>
 <a href="http://localhost:8080/internet_shop_war_exploded/servlet/getallorders">Orders</a>
+<a href="http://localhost:8080/internet_shop_war_exploded/logout">Logout</a>
 </body>
 </html>

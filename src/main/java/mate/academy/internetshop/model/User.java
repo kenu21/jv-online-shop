@@ -1,7 +1,9 @@
 package mate.academy.internetshop.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
     private static long idGenerator = 0;
@@ -10,6 +12,7 @@ public class User {
     private String login;
     private String password;
     private String token;
+    private Set<Role> roles;
     private List<Order> orders;
 
     public User(String name, String login, String password) {
@@ -17,6 +20,7 @@ public class User {
         this.name = name;
         this.login = login;
         this.password = password;
+        roles = new HashSet<>();
         orders = new ArrayList<>();
     }
 
@@ -56,12 +60,24 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
     }
 
     @Override
