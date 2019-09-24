@@ -1,6 +1,7 @@
 package mate.academy.internetshop.web.filters;
 
 import static mate.academy.internetshop.model.Role.RoleName.ADMIN;
+import static mate.academy.internetshop.model.Role.RoleName.USER;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,6 +33,13 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         protectedUrls.put("/servlet/getallusers", ADMIN);
+        protectedUrls.put("/servlet/getallorders", USER);
+        protectedUrls.put("/servlet/buy", USER);
+        protectedUrls.put("/servlet/delete", USER);
+        protectedUrls.put("/servlet/delete", USER);
+        protectedUrls.put("/servlet/bucket", USER);
+        protectedUrls.put("/servlet/completeorder", USER);
+        protectedUrls.put("/servlet/deleteorder", USER);
     }
 
     @Override
