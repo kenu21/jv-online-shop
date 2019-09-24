@@ -111,13 +111,32 @@
         <servlet-name>registration</servlet-name>
         <url-pattern>/registration</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet>
+        <servlet-name>logoutcontroller</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>logoutcontroller</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+
     <filter>
         <filter-name>authfilter</filter-name>
         <filter-class>mate.academy.internetshop.web.filters.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authfilter</filter-name>
+        <url-pattern>/servlet/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>authorizationfilter</filter-name>
+        <filter-class>mate.academy.internetshop.web.filters.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorizationfilter</filter-name>
         <url-pattern>/servlet/*</url-pattern>
     </filter-mapping>
 

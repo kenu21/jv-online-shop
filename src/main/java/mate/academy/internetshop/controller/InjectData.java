@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
@@ -36,7 +37,12 @@ public class InjectData extends HttpServlet {
         itemService.create(iphone);
 
         User vasya = new User("Vasya", "1", "1");
+        vasya.addRole(Role.of("USER"));
         userService.create(vasya);
+
+        User admin = new User("Hero", "2", "2");
+        admin.addRole(Role.of("ADMIN"));
+        userService.create(admin);
 
         Bucket bucket = new Bucket(vasya.getId());
 
