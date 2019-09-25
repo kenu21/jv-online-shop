@@ -1,15 +1,31 @@
-2019-09-24 14:22:05 INFO  InjectInitializer:15 - Dependency injection started...
-2019-09-24 14:22:17 INFO  LoginController:36 - Authentication has starter...
-2019-09-24 14:22:17 INFO  LoginController:46 - Authentication has failed login = 3
-2019-09-24 14:22:20 INFO  LoginController:36 - Authentication has starter...
-2019-09-24 14:22:22 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:25 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:26 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:26 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:27 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:28 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:28 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:31 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-24 14:22:37 INFO  LoginController:36 - Authentication has starter...
-2019-09-24 14:22:39 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-09-24 14:22:41 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:52:33 INFO  InjectInitializer:15 - Dependency injection started...
+2019-09-25 22:52:33 INFO  Factory:36 - Connection with dbinternetshop is established!
+2019-09-25 22:52:46 INFO  LoginController:36 - Authentication has starter...
+2019-09-25 22:52:46 INFO  LoginController:46 - Authentication has failed login = 5
+2019-09-25 22:52:51 INFO  LoginController:36 - Authentication has starter...
+2019-09-25 22:52:57 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:52:59 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:52:59 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:52:59 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:52:59 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:00 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:00 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:01 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:02 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:02 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:03 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:03 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:07 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:07 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:13 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:18 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-25 22:53:31 INFO  LoginController:36 - Authentication has starter...
+2019-09-25 22:53:34 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:53:43 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:53:54 INFO  LoginController:36 - Authentication has starter...
+2019-09-25 22:53:55 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:54:00 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:54:14 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:54:19 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:54:20 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-25 22:54:24 INFO  AuthenticationFilter:43 - User 2 was authenticated
