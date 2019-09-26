@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import mate.academy.internetshop.annotations.Dao;
@@ -23,19 +24,19 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item create(Item item) {
-        Statement stmt = null;
-        String query = "Insert into " + DB_NAME + ".items (name, price) Values ("
-                + "'" + item.getName() + "'" + ", " + item.getPrice() + ");";
+        Statement statement = null;
+        String query = String.format("Insert into %s.items (name, price) Values ('%s', %f);",
+                DB_NAME, item.getName(), item.getPrice());
         try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(query);
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
             return item;
         } catch (SQLException e) {
-            logger.warn("Can't create item", e);
+            logger.error("Can't create item", e);
         } finally {
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException e) {
                     logger.warn("Can't close statement ", e);
                 }
@@ -46,16 +47,16 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item get(Long id) {
-        Statement stmt = null;
-        String query = "Select * from " + DB_NAME + ".items where item_id = " + id + ";";
+        Statement statement = null;
+        String query = String.format("Select * from %s.items where item_id = %d;", DB_NAME, id);
 
         try {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                Long itemId = rs.getLong("item_id");
-                String name = rs.getString("name");
-                Double price = rs.getDouble("price");
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Long itemId = resultSet.getLong("item_id");
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
                 Item item = new Item(name, price);
                 item.setId(itemId);
                 return item;
@@ -63,9 +64,9 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         } catch (SQLException e) {
             logger.warn("Can't get item by id=" + id);
         } finally {
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException e) {
                     logger.warn("Can't close statement ", e);
                 }
@@ -76,19 +77,20 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item update(Item item) {
-        Statement stmt = null;
-        String query = "Update " + DB_NAME + ".items Set name =" + "'" + item.getName()
-                + "'" + ", price=" + item.getPrice() + "where item_id = " + item.getId() + ";";
+        Statement statement = null;
+        String query = String.format("Update %s.items Set name = '%s' , price = %f "
+                        + "where item_id = %d;",
+                DB_NAME, item.getName(), item.getPrice(), item.getId());
         try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(query);
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
             return item;
         } catch (SQLException e) {
             logger.warn("Can't update item", e);
         } finally {
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException e) {
                     logger.warn("Can't close statement ", e);
                 }
@@ -99,19 +101,19 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item delete(Long id) {
-        Statement stmt = null;
+        Statement statement = null;
         Item item = get(id);
-        String query = "Delete from " + DB_NAME + ".items where item_id = " + id + ";";
+        String query = String.format("Delete from %s.items where item_id = %d;", DB_NAME, id);
         try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(query);
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
             return item;
         } catch (SQLException e) {
             logger.warn("Can't delete item", e);
         } finally {
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException e) {
                     logger.warn("Can't close statement ", e);
                 }
@@ -122,17 +124,17 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public List<Item> getAllItems() {
-        Statement stmt = null;
-        String query = "Select * from " + DB_NAME + ".items;";
+        Statement statement = null;
+        String query = String.format("Select * from %s.items;", DB_NAME);
         List<Item> list = new ArrayList<>();
 
         try {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                Long itemId = rs.getLong("item_id");
-                String name = rs.getString("name");
-                Double price = rs.getDouble("price");
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Long itemId = resultSet.getLong("item_id");
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
                 Item item = new Item(name, price);
                 item.setId(itemId);
                 list.add(item);
@@ -141,14 +143,14 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         } catch (SQLException e) {
             logger.warn("Can't get list", e);
         } finally {
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException e) {
                     logger.warn("Can't close statement ", e);
                 }
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 }

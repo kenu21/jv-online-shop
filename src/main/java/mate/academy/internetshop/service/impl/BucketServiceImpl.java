@@ -54,7 +54,7 @@ public class BucketServiceImpl implements BucketService {
         List<Item> list = bucket.getItems();
         Item item = null;
         for (Item it : list) {
-            if (itemId == it.getId()) {
+            if (itemId.equals(it.getId())) {
                 item = it;
                 break;
             }
