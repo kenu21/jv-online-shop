@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import mate.academy.internetshop.exceptions.AuthenticationException;
-import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 
 public interface UserService {
@@ -16,8 +15,6 @@ public interface UserService {
     User update(User user);
 
     void delete(Long id);
-
-    List<Order> getOrders(Long userId);
 
     List<User> getAll();
 

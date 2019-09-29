@@ -24,9 +24,9 @@ public class CompleteOrder extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Long userId = (Long) req.getSession(true).getAttribute("userId");
-        List<Item> items = bucketService.getAllItems(bucketService.get(userId).getId());
+        List<Item> items = bucketService.getAllItems(bucketService.getByUserId(userId).getId());
         orderService.completeOrder(items, userId);
-        bucketService.clear(bucketService.get(userId).getId());
+        bucketService.clear(bucketService.getByUserId(userId).getId());
 
         resp.sendRedirect(req.getContextPath() + "/servlet/getallorders");
     }

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import mate.academy.internetshop.annotations.Dao;
@@ -30,7 +29,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query);
-            return item;
         } catch (SQLException e) {
             logger.error("Can't create item", e);
         } finally {
@@ -42,14 +40,14 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override
     public Item get(Long id) {
         Statement statement = null;
         String query = String.format("Select * from %s.items where item_id = %d;", DB_NAME, id);
-
+        Item item = null;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -57,9 +55,8 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 Long itemId = resultSet.getLong("item_id");
                 String name = resultSet.getString("name");
                 Double price = resultSet.getDouble("price");
-                Item item = new Item(name, price);
+                item = new Item(name, price);
                 item.setId(itemId);
-                return item;
             }
         } catch (SQLException e) {
             logger.warn("Can't get item by id=" + id);
@@ -72,7 +69,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override
@@ -84,7 +81,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query);
-            return item;
         } catch (SQLException e) {
             logger.warn("Can't update item", e);
         } finally {
@@ -96,7 +92,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override
@@ -107,7 +103,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query);
-            return item;
         } catch (SQLException e) {
             logger.warn("Can't delete item", e);
         } finally {
@@ -119,7 +114,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override
@@ -127,7 +122,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         Statement statement = null;
         String query = String.format("Select * from %s.items;", DB_NAME);
         List<Item> list = new ArrayList<>();
-
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -139,7 +133,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 item.setId(itemId);
                 list.add(item);
             }
-            return list;
         } catch (SQLException e) {
             logger.warn("Can't get list", e);
         } finally {
@@ -151,6 +144,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 }
             }
         }
-        return Collections.emptyList();
+        return list;
     }
 }

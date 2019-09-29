@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import mate.academy.internetshop.annotations.Dao;
@@ -41,5 +42,11 @@ public class OrderDaoImpl implements OrderDao {
         Order order = get(id);
         Storage.orders.removeIf((o) -> o.getId().equals(id));
         return order;
+    }
+
+    @Override
+    public List<Order> getOrders(Long userId) {
+        // don't use
+        return null;
     }
 }
