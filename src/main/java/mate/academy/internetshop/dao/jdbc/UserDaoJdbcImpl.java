@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import mate.academy.internetshop.annotations.Dao;
 import mate.academy.internetshop.annotations.Inject;
@@ -51,28 +53,27 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User get(Long id) {
-        String queryUsers = String.format("SELECT * FROM users WHERE user_id = %d;", id);
-        String queryRoles = String.format("SELECT role_name FROM roles r INNER JOIN users_roles ur "
-                + "ON r.role_id = ur.role_id where ur.user_id = %d;", id);
+        String query = String.format("SELECT u.user_id, u.name, u.login, u.password, "
+                + "u.token, r.role_name FROM users u INNER JOIN users_roles ur "
+                + "ON u.user_id = ur.user_id INNER JOIN roles r "
+                + "ON ur.role_id = r.role_id WHERE u.user_id = %d;", id);
         User user = null;
-        try (Statement statementUsers = connection.createStatement();
-                Statement statementRoles = connection.createStatement();
-                ResultSet resultSetUsers = statementUsers.executeQuery(queryUsers);
-                ResultSet resultSetRoles = statementRoles.executeQuery(queryRoles)) {
-            while (resultSetUsers.next()) {
-                Long userId = resultSetUsers.getLong("user_id");
-                String name = resultSetUsers.getString("name");
-                String login = resultSetUsers.getString("login");
-                String password = resultSetUsers.getString("password");
-                String token = resultSetUsers.getString("token");
+        try (Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            Set<Role> set = new HashSet<>();
+            while (resultSet.next()) {
+                Long userId = resultSet.getLong("user_id");
+                String name = resultSet.getString("name");
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                String token = resultSet.getString("token");
                 user = new User(name, login, password);
                 user.setId(userId);
                 user.setToken(token);
+                Role role = Role.of(resultSet.getString("role_name"));
+                set.add(role);
             }
-            while (resultSetRoles.next()) {
-                Role role = Role.of(resultSetRoles.getString("role_name"));
-                user.getRoles().add(role);
-            }
+            user.setRoles(set);
         } catch (SQLException e) {
             logger.error("Can't get user", e);
         }
@@ -110,8 +111,6 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         List<User> list = new ArrayList<>();
         String queryUsers = "SELECT * FROM users";
 
-        User user = null;
-
         try (Statement statementUsers = connection.createStatement();
                 ResultSet resultSetUsers = statementUsers.executeQuery((queryUsers))) {
             while (resultSetUsers.next()) {
@@ -120,13 +119,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String login = resultSetUsers.getString("login");
                 String password = resultSetUsers.getString("password");
                 String token = resultSetUsers.getString("token");
-                user = new User(name, login, password);
+                User user = new User(name, login, password);
                 user.setId(userId);
                 user.setToken(token);
 
                 String queryRoles = String.format(
                         "SELECT role_name FROM roles r INNER JOIN users_roles ur "
-                        + "ON r.role_id = ur.role_id where ur.user_id = %d;", userId);
+                                + "ON r.role_id = ur.role_id where ur.user_id = %d;", userId);
                 try (Statement statementRoles = connection.createStatement();
                         ResultSet resultSetRoles = statementRoles.executeQuery(queryRoles)) {
                     while (resultSetRoles.next()) {
@@ -144,21 +143,62 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User login(String login, String psw) throws AuthenticationException {
-        List<User> list = getAll();
-        Optional<User> user = list.stream()
-                .filter(u -> u.getLogin().equals(login))
-                .findFirst();
-        if (user.isEmpty() || !user.get().getPassword().equals(psw)) {
-            throw new AuthenticationException("incorrect username or password");
+        User user = null;
+        String query = String.format("SELECT u.user_id, u.name, u.token, r.role_name "
+                + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
+                + "INNER JOIN roles r ON ur.role_id = r.role_id "
+                + "WHERE login = %s AND password = %s;", login, psw);
+        try (Statement statement = connection.createStatement();
+                     ResultSet resultSet = statement.executeQuery(query)) {
+            Set<Role> set = new HashSet<>();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("user_id");
+                String name = resultSet.getString("name");
+                String token = resultSet.getString("token");
+                user = new User(name, login, psw);
+                user.setId(id);
+                user.setToken(token);
+                Role role = Role.of(resultSet.getString("role_name"));
+                set.add(role);
+            }
+            if (user == null) {
+                throw new AuthenticationException("incorrect username or password");
+            }
+            user.setRoles(set);
+        } catch (SQLException e) {
+            logger.error("Can't get users by login and password ", e);
         }
-        return user.get();
+        return user;
     }
 
     @Override
     public Optional<User> getByToken(String token) {
-        List<User> list = getAll();
-        return list.stream()
-                .filter(u -> u.getToken().equals(token))
-                .findFirst();
+        Optional<User> optionalUser = Optional.empty();
+        String query = String.format(
+                "SELECT u.user_id, u.name, u.login, u.password, r.role_name "
+                        + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
+                        + "INNER JOIN roles r ON ur.role_id = r.role_id "
+                        + "WHERE token = '%s';", token);
+        try (Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            Set<Role> set = new HashSet<>();
+            User user = null;
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("user_id");
+                String name = resultSet.getString("name");
+                String login = resultSet.getString("login");
+                String psw = resultSet.getString("password");
+                user = new User(name, login, psw);
+                user.setId(id);
+                user.setToken(token);
+                Role role = Role.of(resultSet.getString("role_name"));
+                set.add(role);
+            }
+            user.setRoles(set);
+            optionalUser = Optional.of(user);
+        } catch (SQLException e) {
+            logger.error("Can't get users by token ", e);
+        }
+        return optionalUser;
     }
 }
