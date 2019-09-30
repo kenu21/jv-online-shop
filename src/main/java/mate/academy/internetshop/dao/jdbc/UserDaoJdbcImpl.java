@@ -1,9 +1,9 @@
 package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,11 +34,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User userDao) {
-        String queryUsers = String.format("INSERT INTO users (name, login, password, token) "
-                        + "VALUES ('%s', '%s', '%s', '%s');", userDao.getName(), userDao.getLogin(),
-                userDao.getPassword(), userDao.getToken());
-        try (Statement statementUsers = connection.createStatement()) {
-            statementUsers.executeUpdate(queryUsers, Statement.RETURN_GENERATED_KEYS);
+        String queryUsers = "INSERT INTO users (name, login, password, token) "
+                        + "VALUES (?, ?, ?, ?);";
+        try (PreparedStatement statementUsers = connection.prepareStatement(
+                queryUsers, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statementUsers.setString(1, userDao.getName());
+            statementUsers.setString(2, userDao.getLogin());
+            statementUsers.setString(3, userDao.getPassword());
+            statementUsers.setString(4, userDao.getToken());
+            statementUsers.executeUpdate();
             ResultSet generatedKeys = statementUsers.getGeneratedKeys();
             generatedKeys.next();
             Long userId = generatedKeys.getLong(1);
@@ -53,13 +57,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User get(Long id) {
-        String query = String.format("SELECT u.user_id, u.name, u.login, u.password, "
+        String query = "SELECT u.user_id, u.name, u.login, u.password, "
                 + "u.token, r.role_name FROM users u INNER JOIN users_roles ur "
                 + "ON u.user_id = ur.user_id INNER JOIN roles r "
-                + "ON ur.role_id = r.role_id WHERE u.user_id = %d;", id);
+                + "ON ur.role_id = r.role_id WHERE u.user_id = ?;";
         User user = null;
-        try (Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
             Set<Role> set = new HashSet<>();
             while (resultSet.next()) {
                 Long userId = resultSet.getLong("user_id");
@@ -82,12 +87,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User update(User userDao) {
-        String queryUsers = String.format(
-                "UPDATE users SET name = '%s', login = '%s', password = '%s' "
-                        + "WHERE user_id = %d;",
-                userDao.getName(), userDao.getLogin(), userDao.getPassword(), userDao.getId());
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(queryUsers);
+        String queryUsers =
+                "UPDATE users SET name = ?, login = ?, password = ? "
+                        + "WHERE user_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(queryUsers)) {
+            statement.setString(1, userDao.getName());
+            statement.setString(2, userDao.getLogin());
+            statement.setString(3, userDao.getPassword());
+            statement.setLong(4, userDao.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update user", e);
         }
@@ -97,9 +105,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User delete(Long id) {
         User user = get(id);
-        String queryUsers = String.format("DELETE FROM users WHERE user_id = %d;", id);
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(queryUsers);
+        String queryUsers = "DELETE FROM users WHERE user_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(queryUsers)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update user", e);
         }
@@ -110,9 +119,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public List<User> getAll() {
         List<User> list = new ArrayList<>();
         String queryUsers = "SELECT * FROM users";
-
-        try (Statement statementUsers = connection.createStatement();
-                ResultSet resultSetUsers = statementUsers.executeQuery((queryUsers))) {
+        try (PreparedStatement statementUsers = connection.prepareStatement(queryUsers);
+                ResultSet resultSetUsers = statementUsers.executeQuery()) {
             while (resultSetUsers.next()) {
                 Long userId = resultSetUsers.getLong("user_id");
                 String name = resultSetUsers.getString("name");
@@ -123,11 +131,12 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setId(userId);
                 user.setToken(token);
 
-                String queryRoles = String.format(
+                String queryRoles =
                         "SELECT role_name FROM roles r INNER JOIN users_roles ur "
-                                + "ON r.role_id = ur.role_id where ur.user_id = %d;", userId);
-                try (Statement statementRoles = connection.createStatement();
-                        ResultSet resultSetRoles = statementRoles.executeQuery(queryRoles)) {
+                                + "ON r.role_id = ur.role_id where ur.user_id = ?;";
+                try (PreparedStatement statementRoles = connection.prepareStatement(queryRoles)) {
+                    statementRoles.setLong(1,  userId);
+                    ResultSet resultSetRoles = statementRoles.executeQuery();
                     while (resultSetRoles.next()) {
                         Role role = Role.of(resultSetRoles.getString("role_name"));
                         user.getRoles().add(role);
@@ -144,12 +153,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User login(String login, String psw) throws AuthenticationException {
         User user = null;
-        String query = String.format("SELECT u.user_id, u.name, u.token, r.role_name "
+        String query = "SELECT u.user_id, u.name, u.token, r.role_name "
                 + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
                 + "INNER JOIN roles r ON ur.role_id = r.role_id "
-                + "WHERE login = %s AND password = %s;", login, psw);
-        try (Statement statement = connection.createStatement();
-                     ResultSet resultSet = statement.executeQuery(query)) {
+                + "WHERE login = ? AND password = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, login);
+            statement.setString(2, psw);
+            ResultSet resultSet = statement.executeQuery();
             Set<Role> set = new HashSet<>();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("user_id");
@@ -174,13 +185,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public Optional<User> getByToken(String token) {
         Optional<User> optionalUser = Optional.empty();
-        String query = String.format(
+        String query =
                 "SELECT u.user_id, u.name, u.login, u.password, r.role_name "
                         + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
                         + "INNER JOIN roles r ON ur.role_id = r.role_id "
-                        + "WHERE token = '%s';", token);
-        try (Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query)) {
+                        + "WHERE token = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, token);
+            ResultSet resultSet = statement.executeQuery();
             Set<Role> set = new HashSet<>();
             User user = null;
             while (resultSet.next()) {
