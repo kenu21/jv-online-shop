@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import mate.academy.internetshop.annotations.Inject;
-import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
@@ -39,9 +38,6 @@ public class RegistrationController extends HttpServlet {
 
         Cookie cookie = new Cookie("MATE", user.getToken());
         resp.addCookie(cookie);
-
-        Bucket bucket = new Bucket(user.getId());
-        bucketService.create(bucket);
 
         HttpSession session = req.getSession(true);
         session.setAttribute("userId", user.getId());

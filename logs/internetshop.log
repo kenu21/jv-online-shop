@@ -1,29 +1,16 @@
-2019-09-26 12:39:08 INFO  InjectInitializer:15 - Dependency injection started...
-2019-09-26 12:39:08 INFO  Factory:35 - Connection with dbinternetshop is established!
-2019-09-26 12:39:13 INFO  AuthenticationFilter:49 - User was not authenticated
-2019-09-26 12:39:16 INFO  LoginController:36 - Authentication has starter...
-2019-09-26 12:39:16 INFO  LoginController:46 - Authentication has failed login = 1
-2019-09-26 12:39:26 INFO  LoginController:36 - Authentication has starter...
-2019-09-26 12:39:30 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:31 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:31 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:33 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:34 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:34 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:35 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:35 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:39 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:39 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:43 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-09-26 12:39:49 INFO  AuthenticationFilter:49 - User was not authenticated
-2019-09-26 12:39:52 INFO  LoginController:36 - Authentication has starter...
-2019-09-26 12:39:56 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-09-26 12:39:57 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-09-26 12:40:00 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-09-26 12:40:04 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-09-26 12:40:16 INFO  LoginController:36 - Authentication has starter...
-2019-09-26 12:40:16 INFO  LoginController:46 - Authentication has failed login = 5
+2019-09-30 17:28:21 INFO  InjectInitializer:15 - Dependency injection started...
+2019-09-30 17:28:21 INFO  Factory:35 - Connection with dbinternetshop is established!
+2019-09-30 17:28:58 INFO  LoginController:36 - Authentication has starter...
+2019-09-30 17:28:58 INFO  LoginController:46 - Authentication has failed login = 3
+2019-09-30 17:29:01 INFO  LoginController:36 - Authentication has starter...
+2019-09-30 17:29:03 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-30 17:29:08 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-30 17:29:12 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-09-30 17:29:19 INFO  AuthenticationFilter:49 - User was not authenticated
+2019-09-30 17:29:23 INFO  AuthenticationFilter:49 - User was not authenticated
+2019-09-30 17:29:30 INFO  LoginController:36 - Authentication has starter...
+2019-09-30 17:29:34 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-30 17:29:38 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-30 17:29:39 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-30 17:29:42 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-09-30 17:29:44 INFO  AuthenticationFilter:43 - User 2 was authenticated

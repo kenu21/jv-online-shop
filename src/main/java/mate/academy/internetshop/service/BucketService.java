@@ -21,4 +21,6 @@ public interface BucketService {
     Bucket clear(Long bucketId);
 
     List<Item> getAllItems(Long bucketId);
+
+    Bucket getByUserId(Long userId);
 }

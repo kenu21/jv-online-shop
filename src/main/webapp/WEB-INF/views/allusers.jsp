@@ -11,7 +11,7 @@ Users:
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Orders</th>
+        <th>Login</th>
     </tr>
     <c:forEach var = "user" items = "${users}">
         <tr>
@@ -22,7 +22,7 @@ Users:
                 <c:out value="${user.name}" />
             </td>
             <td>
-                <c:out value="${user.orders}" />
+                <c:out value="${user.login}" />
             </td>
         </tr>
     </c:forEach>
