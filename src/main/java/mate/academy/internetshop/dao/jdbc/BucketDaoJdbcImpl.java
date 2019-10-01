@@ -85,6 +85,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't add item", e);
+            return false;
         }
         return true;
     }
@@ -134,6 +135,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't clear bucket", e);
+            return false;
         }
         return true;
     }
