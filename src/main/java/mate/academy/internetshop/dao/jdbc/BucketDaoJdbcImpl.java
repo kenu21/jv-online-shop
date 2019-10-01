@@ -24,9 +24,9 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Bucket create(Bucket bucket) {
-        String queryBucktes = "INSERT INTO buckets (user_id) VALUES ?;";
+        String queryBuckets = "INSERT INTO buckets (user_id) VALUES ?;";
         try (PreparedStatement statementBuckets = connection.prepareStatement(
-                queryBucktes, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                queryBuckets, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statementBuckets.setLong(1, bucket.getUserId());
             statementBuckets.executeUpdate();
             ResultSet generatedKeys = statementBuckets.getGeneratedKeys();
@@ -42,8 +42,8 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public Bucket get(Long bucketId) {
         Bucket bucket = null;
-        String queryBucktes = "SELECT * FROM buckets WHERE bucket_id = ?;";
-        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+        String queryBuckets = "SELECT * FROM buckets WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBuckets)) {
             statementBuckets.setLong(1, bucketId);
             ResultSet resultSet = statementBuckets.executeQuery();
             while (resultSet.next()) {
@@ -121,6 +121,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't delete item", e);
+            return false;
         }
         return true;
     }

@@ -114,32 +114,38 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
                 Long orderId = resultSet.getLong("order_id");
                 Order order = new Order(userId);
                 order.setId(orderId);
-                List<Item> listItem = new ArrayList<>();
-                String queryItems =
-                        "SELECT * FROM items i INNER JOIN orders_items oi "
-                                + "ON i.item_id = oi.item_id "
-                                + "INNER JOIN orders o ON oi.order_id = o.order_id "
-                                + "WHERE o.user_id = ? and o.order_id = ?;";
-                try (PreparedStatement statementItems = connection.prepareStatement(queryItems)) {
-                    statementItems.setLong(1, userId);
-                    statementItems.setLong(2, orderId);
-                    ResultSet resultSetItems = statementItems.executeQuery();
-                    while (resultSetItems.next()) {
-                        Long itemId = resultSetItems.getLong("item_id");
-                        String name = resultSetItems.getString("name");
-                        Double price = resultSetItems.getDouble("price");
-                        Item item = new Item(name, price);
-                        item.setId(itemId);
-                        listItem.add(item);
-                    }
-                }
+                List<Item> listItem = getAllItemsFromOrder(orderId, userId);
                 order.setItems(listItem);
                 list.add(order);
             }
-
         } catch (SQLException e) {
-            logger.error("Can't create order", e);
+            logger.error("Can't get orders", e);
         }
         return list;
+    }
+
+    private List<Item> getAllItemsFromOrder(Long orderId, Long userId) {
+        List<Item> listItem = new ArrayList<>();
+        String queryItems =
+                "SELECT * FROM items i INNER JOIN orders_items oi "
+                        + "ON i.item_id = oi.item_id "
+                        + "INNER JOIN orders o ON oi.order_id = o.order_id "
+                        + "WHERE o.user_id = ? and o.order_id = ?;";
+        try (PreparedStatement statementItems = connection.prepareStatement(queryItems)) {
+            statementItems.setLong(1, userId);
+            statementItems.setLong(2, orderId);
+            ResultSet resultSetItems = statementItems.executeQuery();
+            while (resultSetItems.next()) {
+                Long itemId = resultSetItems.getLong("item_id");
+                String name = resultSetItems.getString("name");
+                Double price = resultSetItems.getDouble("price");
+                Item item = new Item(name, price);
+                item.setId(itemId);
+                listItem.add(item);
+            }
+        } catch (SQLException e) {
+            logger.error("Can't get list items by order and user", e);
+        }
+        return listItem;
     }
 }

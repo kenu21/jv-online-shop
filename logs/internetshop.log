@@ -29,3 +29,9 @@
 2019-10-01 01:19:34 INFO  AuthenticationFilter:43 - User 2 was authenticated
 2019-10-01 01:19:36 INFO  AuthenticationFilter:43 - User 2 was authenticated
 2019-10-01 01:19:38 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-10-01 12:24:28 INFO  InjectInitializer:15 - Dependency injection started...
+2019-10-01 12:24:29 INFO  Factory:35 - Connection with dbinternetshop is established!
+2019-10-01 12:24:35 INFO  LoginController:36 - Authentication has starter...
+2019-10-01 12:24:38 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-01 12:24:44 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-01 12:24:44 INFO  AuthenticationFilter:43 - User 1 was authenticated
