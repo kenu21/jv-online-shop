@@ -1,9 +1,9 @@
 package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +24,11 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Bucket create(Bucket bucket) {
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("INSERT INTO buckets (user_id) VALUES (%d);",
-                    bucket.getUserId());
-            statementBuckets.executeUpdate(queryBucktes, Statement.RETURN_GENERATED_KEYS);
+        String queryBuckets = "INSERT INTO buckets (user_id) VALUES ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(
+                queryBuckets, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statementBuckets.setLong(1, bucket.getUserId());
+            statementBuckets.executeUpdate();
             ResultSet generatedKeys = statementBuckets.getGeneratedKeys();
             generatedKeys.next();
             Long bucketId = generatedKeys.getLong(1);
@@ -41,10 +42,10 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public Bucket get(Long bucketId) {
         Bucket bucket = null;
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("SELECT * from buckets where bucket_id = %d;",
-                    bucketId);
-            ResultSet resultSet = statementBuckets.executeQuery(queryBucktes);
+        String queryBuckets = "SELECT * FROM buckets WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBuckets)) {
+            statementBuckets.setLong(1, bucketId);
+            ResultSet resultSet = statementBuckets.executeQuery();
             while (resultSet.next()) {
                 Long userId = resultSet.getLong("user_id");
                 bucket = new Bucket(userId);
@@ -59,10 +60,10 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public Bucket getByUserId(Long userId) {
         Bucket bucket = null;
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("SELECT * from buckets where user_id = %d;",
-                    userId);
-            ResultSet resultSet = statementBuckets.executeQuery(queryBucktes);
+        String queryBucktes = "SELECT * FROM buckets WHERE user_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, userId);
+            ResultSet resultSet = statementBuckets.executeQuery();
             while (resultSet.next()) {
                 Long bucketId = resultSet.getLong("bucket_id");
                 bucket = new Bucket(userId);
@@ -76,13 +77,15 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Boolean addItem(Long bucketId, Long itemId) {
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format(
-                    "INSERT INTO buckets_items (bucket_id, item_id) VALUES (%d, %d);",
-                    bucketId, itemId);
-            statementBuckets.executeUpdate(queryBucktes);
+        String queryBucktes =
+                "INSERT INTO buckets_items (bucket_id, item_id) VALUES (?, ?);";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, bucketId);
+            statementBuckets.setLong(2, itemId);
+            statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't add item", e);
+            return false;
         }
         return true;
     }
@@ -90,10 +93,11 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public List<Item> getItems(Long bucketId) {
         List<Item> list = new ArrayList<>();
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("SELECT * FROM items i INNER JOIN buckets_items bi "
-                    + "ON i.item_id = bi.item_id WHERE bucket_id = %d;", bucketId);
-            ResultSet resultSet = statementBuckets.executeQuery(queryBucktes);
+        String queryBucktes = "SELECT * FROM items i INNER JOIN buckets_items bi "
+                + "ON i.item_id = bi.item_id WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, bucketId);
+            ResultSet resultSet = statementBuckets.executeQuery();
             while (resultSet.next()) {
                 Long itemId = resultSet.getLong("item_id");
                 String name = resultSet.getString("name");
@@ -110,36 +114,40 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Boolean deleteItem(Long bucketId, Long itemId) {
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format(
-                    "DELETE FROM buckets_items where bucket_id = %d and item_id = %d;",
-                    bucketId, itemId);
-            statementBuckets.executeUpdate(queryBucktes);
+        String queryBucktes =
+                "DELETE FROM buckets_items WHERE bucket_id = ? AND item_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, bucketId);
+            statementBuckets.setLong(2, itemId);
+            statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't delete item", e);
+            return false;
         }
         return true;
     }
 
     @Override
     public Boolean clear(Long bucketId) {
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("DELETE FROM buckets_items WHERE bucket_id = %d;",
-                    bucketId);
-            statementBuckets.executeUpdate(queryBucktes);
+        String queryBucktes = "DELETE FROM buckets_items WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, bucketId);
+            statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't clear bucket", e);
+            return false;
         }
         return true;
     }
 
     @Override
     public Bucket update(Bucket bucket) {
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format(
-                    "UPDATE buckets SET user_id = %d WHERE bucket_id = %d;",
-                    bucket.getUserId(), bucket.getId());
-            statementBuckets.executeUpdate(queryBucktes);
+        String queryBucktes =
+                "UPDATE buckets SET user_id = ? WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, bucket.getUserId());
+            statementBuckets.setLong(2, bucket.getId());
+            statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update bucket", e);
         }
@@ -149,10 +157,10 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public Bucket delete(Long id) {
         Bucket bucket = get(id);
-        try (Statement statementBuckets = connection.createStatement()) {
-            String queryBucktes = String.format("DELETE FROM buckets WHERE bucket_id = %d;",
-                    id);
-            statementBuckets.executeUpdate(queryBucktes);
+        String queryBucktes = "DELETE FROM buckets WHERE bucket_id = ?;";
+        try (PreparedStatement statementBuckets = connection.prepareStatement(queryBucktes)) {
+            statementBuckets.setLong(1, id);
+            statementBuckets.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't delete bucket", e);
         }
