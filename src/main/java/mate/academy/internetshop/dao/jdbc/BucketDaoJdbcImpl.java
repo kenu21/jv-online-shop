@@ -24,7 +24,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Bucket create(Bucket bucket) {
-        String queryBuckets = "INSERT INTO buckets (user_id) VALUES ?;";
+        String queryBuckets = "INSERT INTO buckets (user_id) VALUES (?);";
         try (PreparedStatement statementBuckets = connection.prepareStatement(
                 queryBuckets, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statementBuckets.setLong(1, bucket.getUserId());

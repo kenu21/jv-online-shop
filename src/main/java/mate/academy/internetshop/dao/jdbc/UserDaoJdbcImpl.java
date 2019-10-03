@@ -1,5 +1,8 @@
 package mate.academy.internetshop.dao.jdbc;
 
+import static mate.academy.internetshop.util.HashUtil.hashPassword;
+
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +26,9 @@ import org.apache.log4j.Logger;
 @Dao
 public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
+    private static final int FIRST_POSITION = 1;
+    private static final int LENGTH_OF_ARRAY = 16;
+
     @Inject
     private static BucketDao bucketDao;
 
@@ -34,14 +40,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User userDao) {
-        String queryUsers = "INSERT INTO users (name, login, password, token) "
-                        + "VALUES (?, ?, ?, ?);";
+        String queryUsers = "INSERT INTO users (name, login, password, salt, token) "
+                        + "VALUES (?, ?, ?, ?, ?);";
         try (PreparedStatement statementUsers = connection.prepareStatement(
                 queryUsers, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statementUsers.setString(1, userDao.getName());
             statementUsers.setString(2, userDao.getLogin());
-            statementUsers.setString(3, userDao.getPassword());
-            statementUsers.setString(4, userDao.getToken());
+            statementUsers.setString(3, hashPassword(userDao.getPassword(), userDao.getSalt()));
+            statementUsers.setBlob(4, userDao.getSaltBlob().orElseThrow());
+            statementUsers.setString(5, userDao.getToken());
             statementUsers.executeUpdate();
             ResultSet generatedKeys = statementUsers.getGeneratedKeys();
             generatedKeys.next();
@@ -57,7 +64,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User get(Long id) {
-        String query = "SELECT u.user_id, u.name, u.login, u.password, "
+        String query = "SELECT u.user_id, u.name, u.login, u.password, u.salt, "
                 + "u.token, r.role_name FROM users u INNER JOIN users_roles ur "
                 + "ON u.user_id = ur.user_id INNER JOIN roles r "
                 + "ON ur.role_id = r.role_id WHERE u.user_id = ?;";
@@ -71,9 +78,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String name = resultSet.getString("name");
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
-                String token = resultSet.getString("token");
+                Blob salt = resultSet.getBlob("salt");
                 user = new User(name, login, password);
                 user.setId(userId);
+                user.setSalt(salt.getBytes(FIRST_POSITION, LENGTH_OF_ARRAY));
+                String token = resultSet.getString("token");
                 user.setToken(token);
                 Role role = Role.of(resultSet.getString("role_name"));
                 set.add(role);
@@ -93,7 +102,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(queryUsers)) {
             statement.setString(1, userDao.getName());
             statement.setString(2, userDao.getLogin());
-            statement.setString(3, userDao.getPassword());
+            statement.setString(3, hashPassword(userDao.getPassword(), userDao.getSalt()));
             statement.setLong(4, userDao.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -126,9 +135,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String name = resultSetUsers.getString("name");
                 String login = resultSetUsers.getString("login");
                 String password = resultSetUsers.getString("password");
+                Blob blob = resultSetUsers.getBlob("salt");
                 String token = resultSetUsers.getString("token");
                 User user = new User(name, login, password);
                 user.setId(userId);
+                user.setSalt(blob.getBytes(FIRST_POSITION, LENGTH_OF_ARRAY));
                 user.setToken(token);
 
                 String queryRoles =
@@ -153,26 +164,33 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User login(String login, String psw) throws AuthenticationException {
         User user = null;
-        String query = "SELECT u.user_id, u.name, u.token, r.role_name "
+        String query = "SELECT u.user_id, u.name, u.password, u.salt, u.token, r.role_name "
                 + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
                 + "INNER JOIN roles r ON ur.role_id = r.role_id "
-                + "WHERE login = ? AND password = ?;";
+                + "WHERE login = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, login);
-            statement.setString(2, psw);
             ResultSet resultSet = statement.executeQuery();
             Set<Role> set = new HashSet<>();
+            Blob blob = null;
             while (resultSet.next()) {
                 Long id = resultSet.getLong("user_id");
                 String name = resultSet.getString("name");
-                String token = resultSet.getString("token");
-                user = new User(name, login, psw);
+                String password = resultSet.getString("password");
+                blob = resultSet.getBlob("salt");
+                user = new User(name, login, password);
                 user.setId(id);
+                user.setSalt(blob.getBytes(FIRST_POSITION, LENGTH_OF_ARRAY));
+                String token = resultSet.getString("token");
                 user.setToken(token);
                 Role role = Role.of(resultSet.getString("role_name"));
                 set.add(role);
             }
             if (user == null) {
+                throw new AuthenticationException("incorrect username or password");
+            }
+            if (!hashPassword(psw, blob.getBytes(FIRST_POSITION, LENGTH_OF_ARRAY))
+                    .equals(user.getPassword())) {
                 throw new AuthenticationException("incorrect username or password");
             }
             user.setRoles(set);
@@ -186,7 +204,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public Optional<User> getByToken(String token) {
         Optional<User> optionalUser = Optional.empty();
         String query =
-                "SELECT u.user_id, u.name, u.login, u.password, r.role_name "
+                "SELECT u.user_id, u.name, u.login, u.password, u.salt, r.role_name "
                         + "FROM users u INNER JOIN users_roles ur ON u.user_id = ur.user_id "
                         + "INNER JOIN roles r ON ur.role_id = r.role_id "
                         + "WHERE token = ?;";
@@ -200,8 +218,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String name = resultSet.getString("name");
                 String login = resultSet.getString("login");
                 String psw = resultSet.getString("password");
+                Blob blob = resultSet.getBlob("salt");
                 user = new User(name, login, psw);
                 user.setId(id);
+                user.setSalt(blob.getBytes(FIRST_POSITION, LENGTH_OF_ARRAY));
                 user.setToken(token);
                 Role role = Role.of(resultSet.getString("role_name"));
                 set.add(role);
