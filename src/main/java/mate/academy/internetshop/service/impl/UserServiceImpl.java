@@ -1,5 +1,7 @@
 package mate.academy.internetshop.service.impl;
 
+import static mate.academy.internetshop.util.HashUtil.createSalt;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         user.setToken(getToken());
+        user.setSalt(createSalt());
         return userDao.create(user);
     }
 

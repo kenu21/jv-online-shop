@@ -1,37 +1,27 @@
-2019-10-01 01:18:17 INFO  InjectInitializer:15 - Dependency injection started...
-2019-10-01 01:18:18 INFO  Factory:35 - Connection with dbinternetshop is established!
-2019-10-01 01:18:24 INFO  LoginController:36 - Authentication has starter...
-2019-10-01 01:18:24 INFO  LoginController:46 - Authentication has failed login = 3
-2019-10-01 01:18:27 INFO  LoginController:36 - Authentication has starter...
-2019-10-01 01:18:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:35 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:35 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:36 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:40 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:47 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:50 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:50 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:50 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:51 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:54 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:54 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:18:54 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:00 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:00 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:01 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:06 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:06 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 01:19:17 INFO  AuthenticationFilter:49 - User was not authenticated
-2019-10-01 01:19:20 INFO  AuthenticationFilter:49 - User was not authenticated
-2019-10-01 01:19:25 INFO  AuthenticationFilter:49 - User was not authenticated
-2019-10-01 01:19:29 INFO  LoginController:36 - Authentication has starter...
-2019-10-01 01:19:31 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-10-01 01:19:34 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-10-01 01:19:36 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-10-01 01:19:38 INFO  AuthenticationFilter:43 - User 2 was authenticated
-2019-10-01 12:24:28 INFO  InjectInitializer:15 - Dependency injection started...
-2019-10-01 12:24:29 INFO  Factory:35 - Connection with dbinternetshop is established!
-2019-10-01 12:24:35 INFO  LoginController:36 - Authentication has starter...
-2019-10-01 12:24:38 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 12:24:44 INFO  AuthenticationFilter:43 - User 1 was authenticated
-2019-10-01 12:24:44 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:18 INFO  InjectInitializer:15 - Dependency injection started...
+2019-10-03 21:03:18 INFO  Factory:35 - Connection with dbinternetshop is established!
+2019-10-03 21:03:24 INFO  LoginController:36 - Authentication has starter...
+2019-10-03 21:03:29 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:31 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:32 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:33 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:33 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:33 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:33 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:34 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:36 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:36 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:37 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:37 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:39 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:39 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:43 INFO  AuthenticationFilter:43 - User 1 was authenticated
+2019-10-03 21:03:52 INFO  LoginController:36 - Authentication has starter...
+2019-10-03 21:03:52 INFO  LoginController:46 - Authentication has failed login = 2
+2019-10-03 21:04:00 INFO  LoginController:36 - Authentication has starter...
+2019-10-03 21:04:05 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-10-03 21:04:09 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-10-03 21:04:12 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-10-03 21:04:15 INFO  AuthenticationFilter:43 - User 2 was authenticated
+2019-10-03 21:04:17 INFO  AuthenticationFilter:43 - User 2 was authenticated

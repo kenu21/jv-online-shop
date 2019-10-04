@@ -147,3 +147,12 @@ CREATE TABLE `dbinternetshop`.`buckets_items` (
     REFERENCES `dbinternetshop`.`items` (`item_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
+
+ALTER TABLE `dbinternetshop`.`users`
+ADD COLUMN `salt` VARCHAR(128) NOT NULL AFTER `password`;
+
+ALTER TABLE `dbinternetshop`.`users`
+CHANGE COLUMN `salt` `salt` BLOB NOT NULL ;
+
+ALTER TABLE `dbinternetshop`.`users`
+CHANGE COLUMN `password` `password` VARCHAR(256) NOT NULL ;

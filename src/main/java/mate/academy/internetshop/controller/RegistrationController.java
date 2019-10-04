@@ -10,16 +10,12 @@ import javax.servlet.http.HttpSession;
 
 import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.model.User;
-import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
 
 public class RegistrationController extends HttpServlet {
 
     @Inject
     private static UserService userService;
-
-    @Inject
-    private static BucketService bucketService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
