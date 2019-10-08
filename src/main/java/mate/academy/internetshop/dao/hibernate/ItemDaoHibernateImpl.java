@@ -76,7 +76,7 @@ public class ItemDaoHibernateImpl implements ItemDao {
     @Override
     public List<Item> getAllItems() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createCriteria(Item.class).list();
+            return session.createQuery("FROM Item").list();
         }
     }
 }

@@ -15,6 +15,9 @@
         <property name="hbm2ddl.auto">validate</property>
 
         <mapping class="mate.academy.internetshop.model.Item"/>
+        <mapping class="mate.academy.internetshop.model.Role"/>
+        <mapping class="mate.academy.internetshop.model.User"/>
+        <mapping class="mate.academy.internetshop.model.Bucket"/>
     </session-factory>
 
 </hibernate-configuration>

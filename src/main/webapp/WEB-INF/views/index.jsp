@@ -11,13 +11,13 @@
     <title>Main</title>
 </head>
 <body>
-<a href="http://localhost:8080/internet_shop_war_exploded/inject">Inject</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/registration">Registration</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/login">Login</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/servlet/getallusers">Users</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/servlet/getallitems">Items</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/servlet/bucket">Bucket</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/servlet/getallorders">Orders</a>
-<a href="http://localhost:8080/internet_shop_war_exploded/logout">Logout</a>
+<a href="${pageContext.request.contextPath}/inject">Inject</a>
+<a href="${pageContext.request.contextPath}/registration">Registration</a>
+<a href="${pageContext.request.contextPath}/login">Login</a>
+<a href="${pageContext.request.contextPath}/servlet/getallusers">Users</a>
+<a href="${pageContext.request.contextPath}/servlet/getallitems">Items</a>
+<a href="${pageContext.request.contextPath}/servlet/bucket">Bucket</a>
+<a href="${pageContext.request.contextPath}/servlet/getallorders">Orders</a>
+<a href="${pageContext.request.contextPath}/logout">Logout</a>
 </body>
 </html>
