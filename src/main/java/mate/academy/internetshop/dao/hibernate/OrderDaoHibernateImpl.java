@@ -6,11 +6,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import mate.academy.internetshop.annotations.Dao;
-import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -19,9 +16,6 @@ import org.hibernate.Transaction;
 @Dao
 public class OrderDaoHibernateImpl implements OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDaoHibernateImpl.class);
-
-    @Inject
-    private static UserDao userDao;
 
     @Override
     public Order create(Order order) {
@@ -58,7 +52,9 @@ public class OrderDaoHibernateImpl implements OrderDao {
     @Override
     public Order update(Order order) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(order);
             transaction.commit();
@@ -66,6 +62,10 @@ public class OrderDaoHibernateImpl implements OrderDao {
             logger.error("Can't update Order " + order, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         return order;
@@ -98,9 +98,8 @@ public class OrderDaoHibernateImpl implements OrderDao {
     public List<Order> getOrders(Long userId) {
         List<Order> list = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query query = session.createQuery("FROM Order WHERE user=:user");
-            User user = userDao.get(userId);
-            query.setParameter("user", user);
+            Query query = session.createQuery("FROM Order WHERE user.id=:userId");
+            query.setParameter("userId", userId);
             list = query.getResultList();
             for (int i = 0; i < list.size(); i++) {
                 Order order = list.get(i);

@@ -2,7 +2,6 @@ package mate.academy.internetshop.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +31,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(name = "orders_items",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
