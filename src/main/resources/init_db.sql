@@ -331,3 +331,6 @@ ADD CONSTRAINT `users_roles_roles_fk`
   REFERENCES `dbinternetshop`.`roles` (`role_id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+ALTER TABLE `dbinternetshop`.`roles`
+CHANGE COLUMN `role_name` `role_name` VARCHAR(255) NOT NULL ;

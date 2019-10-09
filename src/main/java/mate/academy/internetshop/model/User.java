@@ -5,19 +5,42 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.log4j.Logger;
 
+@Entity
+@Table(name = "users")
 public class User {
     private static final Logger logger = Logger.getLogger(User.class);
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     private String name;
     private String login;
     private String password;
+
+    @Column(columnDefinition = "BLOB")
     private byte[] salt;
     private String token;
+
+    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<Role> roles;
 
     public User(String name, String login, String password) {
@@ -26,6 +49,8 @@ public class User {
         this.password = password;
         roles = new HashSet<>();
     }
+
+    public User() {}
 
     public Long getId() {
         return id;
@@ -55,14 +80,8 @@ public class User {
         return password;
     }
 
-    public Optional<Blob> getSaltBlob() {
-        try {
-            Blob blob = new SerialBlob(salt);
-            return Optional.of(blob);
-        } catch (SQLException e) {
-            logger.error("Can't create blob for user!", e);
-        }
-        return Optional.empty();
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public byte[] getSalt() {
@@ -71,10 +90,6 @@ public class User {
 
     public void setSalt(byte[] salt) {
         this.salt = salt;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Set<Role> getRoles() {
@@ -95,6 +110,16 @@ public class User {
 
     public void addRole(Role role) {
         roles.add(role);
+    }
+
+    public Optional<Blob> getSaltBlob() {
+        try {
+            Blob blob = new SerialBlob(salt);
+            return Optional.of(blob);
+        } catch (SQLException e) {
+            logger.error("Can't create blob for user!", e);
+        }
+        return Optional.empty();
     }
 
     @Override
