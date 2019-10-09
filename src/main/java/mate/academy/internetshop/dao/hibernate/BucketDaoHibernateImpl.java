@@ -1,6 +1,6 @@
 package mate.academy.internetshop.dao.hibernate;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import mate.academy.internetshop.annotations.Dao;
@@ -147,7 +147,7 @@ public class BucketDaoHibernateImpl implements BucketDao {
         try {
             Bucket bucket = get(bucketId);
             List<Item> list = bucket.getItems();
-            list = Collections.emptyList();
+            list = new ArrayList();
             update(bucket);
             return true;
         } catch (Exception e) {
