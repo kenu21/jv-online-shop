@@ -1,336 +1,240 @@
-CREATE SCHEMA `dbinternetshop` DEFAULT CHARACTER SET utf8 ;
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: dbinternetshop
+-- ------------------------------------------------------
+-- Server version	8.0.15
 
-CREATE TABLE `dbinternetshop`.`items` (item_id int);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-ALTER TABLE `dbinternetshop`.`items`
-ADD COLUMN `name` VARCHAR(225) NOT NULL AFTER `item_id`,
-ADD COLUMN `price` DECIMAL(6,2) NOT NULL AFTER `name`,
-CHANGE COLUMN `item_id` `item_id` INT NOT NULL AUTO_INCREMENT ,
-ADD PRIMARY KEY (`item_id`);
-;
+--
+-- Table structure for table `buckets`
+--
 
-INSERT INTO `dbinternetshop`.`items` (`name`, `price`) VALUES ('nokia', '50');
-INSERT INTO `dbinternetshop`.`items` (`name`, `price`) VALUES ('samsung', '300');
-INSERT INTO `dbinternetshop`.`items` (`name`, `price`) VALUES ('iphone11', '1000');
-
-CREATE TABLE `dbinternetshop`.`orders` (
-  `order_id` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`order_id`));
-
-CREATE TABLE `dbinternetshop`.`orders_items` (
-  `orders_items_id` INT NOT NULL AUTO_INCREMENT,
-  `order_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
-  PRIMARY KEY (`orders_items_id`),
-  INDEX `orders_items_orders_fk_idx` (`order_id` ASC) VISIBLE,
-  INDEX `orders_itmes_items_fk_idx` (`item_id` ASC) VISIBLE,
-  CONSTRAINT `orders_items_orders_fk`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `dbinternetshop`.`orders` (`order_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `orders_itmes_items_fk`
-    FOREIGN KEY (`item_id`)
-    REFERENCES `dbinternetshop`.`items` (`item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-CREATE TABLE `dbinternetshop`.`users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `login` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `token` VARCHAR(45) NULL,
-  PRIMARY KEY (`user_id`));
-
-ALTER TABLE `dbinternetshop`.`orders`
-ADD COLUMN `user_id` INT NOT NULL AFTER `order_id`,
-ADD INDEX `orders_users_fk_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`orders`
-ADD CONSTRAINT `orders_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
-CREATE TABLE `dbinternetshop`.`roles` (
-  `role_id` INT NOT NULL AUTO_INCREMENT,
-  `role_name` ENUM('USER', 'ADMIN') NOT NULL,
-  PRIMARY KEY (`role_id`));
-
-INSERT INTO roles (role_name) values ('USER');
-INSERT INTO roles (role_name) values ('ADMIN');
-
-CREATE TABLE `dbinternetshop`.`users_roles` (
-  `users_roles_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NULL,
-  `role_id` INT NULL,
-  PRIMARY KEY (`users_roles_id`),
-  INDEX `users_roles_users_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `users_roles_roles_fk_idx` (`role_id` ASC) VISIBLE,
-  CONSTRAINT `users_roles_users_fk`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `dbinternetshop`.`users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `users_roles_roles_fk`
-    FOREIGN KEY (`role_id`)
-    REFERENCES `dbinternetshop`.`roles` (`role_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-ALTER TABLE `dbinternetshop`.`orders`
-DROP FOREIGN KEY `orders_users_fk`;
-ALTER TABLE `dbinternetshop`.`orders`
-ADD CONSTRAINT `orders_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
-ALTER TABLE `dbinternetshop`.`orders_items`
-DROP FOREIGN KEY `orders_items_orders_fk`,
-DROP FOREIGN KEY `orders_itmes_items_fk`;
-ALTER TABLE `dbinternetshop`.`orders_items`
-ADD CONSTRAINT `orders_items_orders_fk`
-  FOREIGN KEY (`order_id`)
-  REFERENCES `dbinternetshop`.`orders` (`order_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
-ADD CONSTRAINT `orders_itmes_items_fk`
-  FOREIGN KEY (`item_id`)
-  REFERENCES `dbinternetshop`.`items` (`item_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
-ALTER TABLE `dbinternetshop`.`users_roles`
-DROP FOREIGN KEY `users_roles_roles_fk`,
-DROP FOREIGN KEY `users_roles_users_fk`;
-ALTER TABLE `dbinternetshop`.`users_roles`
-ADD CONSTRAINT `users_roles_roles_fk`
-  FOREIGN KEY (`role_id`)
-  REFERENCES `dbinternetshop`.`roles` (`role_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
-ADD CONSTRAINT `users_roles_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
-CREATE TABLE `dbinternetshop`.`buckets` (
-  `bucket_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
+DROP TABLE IF EXISTS `buckets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `buckets` (
+  `bucket_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
   PRIMARY KEY (`bucket_id`),
-  INDEX `buckets_users_fk_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `buckets_users_fk`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `dbinternetshop`.`users` (`user_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+  KEY `buckets_users_fk_idx` (`user_id`),
+  CONSTRAINT `buckets_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE `dbinternetshop`.`buckets_items` (
-  `buckets_items_id` INT NOT NULL AUTO_INCREMENT,
-  `bucket_id` INT NOT NULL,
-  `item_id` INT NULL,
+--
+-- Dumping data for table `buckets`
+--
+
+LOCK TABLES `buckets` WRITE;
+/*!40000 ALTER TABLE `buckets` DISABLE KEYS */;
+INSERT INTO `buckets` VALUES (30,39),(31,40);
+/*!40000 ALTER TABLE `buckets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `buckets_items`
+--
+
+DROP TABLE IF EXISTS `buckets_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `buckets_items` (
+  `buckets_items_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `bucket_id` bigint(20) NOT NULL,
+  `item_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`buckets_items_id`),
-  INDEX `buckets_items_buckets_fk_idx` (`bucket_id` ASC) VISIBLE,
-  INDEX `buckets_items_items_fk_idx` (`item_id` ASC) VISIBLE,
-  CONSTRAINT `buckets_items_buckets_fk`
-    FOREIGN KEY (`bucket_id`)
-    REFERENCES `dbinternetshop`.`buckets` (`bucket_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `buckets_items_items_fk`
-    FOREIGN KEY (`item_id`)
-    REFERENCES `dbinternetshop`.`items` (`item_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+  KEY `buckets_items_items_fk_idx` (`item_id`),
+  KEY `buckets_items_buckets_fk_idx` (`bucket_id`),
+  CONSTRAINT `buckets_items_buckets_fk` FOREIGN KEY (`bucket_id`) REFERENCES `buckets` (`bucket_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `buckets_items_items_fk` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`users`
-ADD COLUMN `salt` VARCHAR(128) NOT NULL AFTER `password`;
+--
+-- Dumping data for table `buckets_items`
+--
 
-ALTER TABLE `dbinternetshop`.`users`
-CHANGE COLUMN `salt` `salt` BLOB NOT NULL ;
+LOCK TABLES `buckets_items` WRITE;
+/*!40000 ALTER TABLE `buckets_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `buckets_items` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`users`
-CHANGE COLUMN `password` `password` VARCHAR(256) NOT NULL ;
+--
+-- Table structure for table `items`
+--
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-DROP FOREIGN KEY `orders_itmes_items_fk`;
-ALTER TABLE `dbinternetshop`.`orders_items`
-CHANGE COLUMN `item_id` `item_id` BIGINT(20) NOT NULL ,
-DROP INDEX `orders_itmes_items_fk_idx` ;
-;
+DROP TABLE IF EXISTS `items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `items` (
+  `item_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `price` decimal(6,2) NOT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`items`
-CHANGE COLUMN `item_id` `item_id` INT(20) NOT NULL AUTO_INCREMENT ,
-CHANGE COLUMN `name` `name` VARCHAR(255) NOT NULL ;
+--
+-- Dumping data for table `items`
+--
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-DROP FOREIGN KEY `buckets_items_items_fk`;
-ALTER TABLE `dbinternetshop`.`buckets_items`
-CHANGE COLUMN `item_id` `item_id` BIGINT(20) NULL DEFAULT NULL ;
-ALTER TABLE `dbinternetshop`.`buckets_items`
-ADD CONSTRAINT `buckets_items_items_fk`
-  FOREIGN KEY (`item_id`)
-  REFERENCES `dbinternetshop`.`items` (`item_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+LOCK TABLES `items` WRITE;
+/*!40000 ALTER TABLE `items` DISABLE KEYS */;
+INSERT INTO `items` VALUES (27,'nokia',50.00),(28,'samsung',300.00),(29,'iphone11',1000.00);
+/*!40000 ALTER TABLE `items` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`items`
-CHANGE COLUMN `item_id` `item_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+--
+-- Table structure for table `orders`
+--
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-ADD CONSTRAINT `orders_items_items_fk`
-  FOREIGN KEY (`item_id`)
-  REFERENCES `dbinternetshop`.`items` (`item_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `orders_users_fk_idx` (`user_id`),
+  CONSTRAINT `orders_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-ADD CONSTRAINT `buckets_items_items_fk`
-  FOREIGN KEY (`item_id`)
-  REFERENCES `dbinternetshop`.`items` (`item_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+--
+-- Dumping data for table `orders`
+--
 
-ALTER TABLE `dbinternetshop`.`users_roles`
-DROP FOREIGN KEY `users_roles_users_fk`,
-DROP FOREIGN KEY `users_roles_roles_fk`;
-ALTER TABLE `dbinternetshop`.`users_roles`
-DROP INDEX `users_roles_roles_fk_idx` ,
-DROP INDEX `users_roles_users_fk_idx` ;
-;
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`users_roles`
-CHANGE COLUMN `users_roles_id` `users_roles_id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-CHANGE COLUMN `user_id` `user_id` BIGINT(20) NULL DEFAULT NULL ,
-CHANGE COLUMN `role_id` `role_id` BIGINT(20) NULL DEFAULT NULL ;
+--
+-- Table structure for table `orders_items`
+--
 
-ALTER TABLE `dbinternetshop`.`orders`
-DROP FOREIGN KEY `orders_users_fk`;
-ALTER TABLE `dbinternetshop`.`orders`
-CHANGE COLUMN `user_id` `user_id` BIGINT(20) NOT NULL ,
-DROP INDEX `orders_users_fk_idx` ;
-;
+DROP TABLE IF EXISTS `orders_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders_items` (
+  `orders_items_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_id` bigint(20) NOT NULL,
+  `item_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`orders_items_id`),
+  KEY `orders_itmes_items_fk_idx` (`item_id`),
+  KEY `orders_items_orders_fk_idx` (`order_id`),
+  CONSTRAINT `orders_items_items_fk` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_items_orders_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`buckets`
-DROP FOREIGN KEY `buckets_users_fk`;
-ALTER TABLE `dbinternetshop`.`buckets`
-CHANGE COLUMN `user_id` `user_id` BIGINT(255) NOT NULL ,
-DROP INDEX `buckets_users_fk_idx` ;
-;
+--
+-- Dumping data for table `orders_items`
+--
 
-ALTER TABLE `dbinternetshop`.`users`
-CHANGE COLUMN `user_id` `user_id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-CHANGE COLUMN `name` `name` VARCHAR(255) NOT NULL ,
-CHANGE COLUMN `login` `login` VARCHAR(255) NOT NULL ,
-CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ,
-CHANGE COLUMN `token` `token` VARCHAR(255) NULL DEFAULT NULL ;
+LOCK TABLES `orders_items` WRITE;
+/*!40000 ALTER TABLE `orders_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders_items` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`buckets`
-ADD INDEX `buckets_users_fk_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`buckets`
-ADD CONSTRAINT `buckets_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+--
+-- Table structure for table `roles`
+--
 
-ALTER TABLE `dbinternetshop`.`orders`
-ADD INDEX `orders_users_fk_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`orders`
-ADD CONSTRAINT `orders_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`users_roles`
-ADD INDEX `users_roles_users_fk_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`users_roles`
-ADD CONSTRAINT `users_roles_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+--
+-- Dumping data for table `roles`
+--
 
-ALTER TABLE `dbinternetshop`.`buckets`
-CHANGE COLUMN `user_id` `user_id` BIGINT(20) NOT NULL ;
-ALTER TABLE `dbinternetshop`.`buckets`
-ADD CONSTRAINT `buckets_users_fk`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `dbinternetshop`.`users` (`user_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (2,'ADMIN'),(3,'USER');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-DROP FOREIGN KEY `buckets_items_buckets_fk`;
-ALTER TABLE `dbinternetshop`.`buckets_items`
-DROP INDEX `buckets_items_buckets_fk_idx` ;
-;
+--
+-- Table structure for table `users`
+--
 
-ALTER TABLE `dbinternetshop`.`buckets`
-CHANGE COLUMN `bucket_id` `bucket_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `salt` blob NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-CHANGE COLUMN `bucket_id` `bucket_id` BIGINT(20) NOT NULL ;
+--
+-- Dumping data for table `users`
+--
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-ADD INDEX `buckets_items_buckets_fk_idx` (`bucket_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`buckets_items`
-ADD CONSTRAINT `buckets_items_buckets_fk`
-  FOREIGN KEY (`bucket_id`)
-  REFERENCES `dbinternetshop`.`buckets` (`bucket_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (39,'1','1','facce8058981cf9b8750f0181792b781286444160ef93ba93c46d6c2253d4382a57fd80df004ce4f4a1d552d95133f5e6257273c25b6bfc6cd35046a35165ee8',_binary '\ЮЉі:\кєz9¬ёA\ЩсЎ','b18e8d19-8886-4d7b-b97c-b762965975ed'),(40,'2','2','67a5dd6a6db127b52f24b668f69fade16cdcaa7cc22e33e321585e32f43440e632b303f3b76c0682ce02be4ba461c0874ff97855a061f5848e9cd9538d8e679a',_binary 'Љ:ф\\‹Th\г\Й%ћ2¦','fe4ce49b-9e41-4bd0-af3c-22ae71a5d0aa');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE `dbinternetshop`.`buckets_items`
-CHANGE COLUMN `buckets_items_id` `buckets_items_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+--
+-- Table structure for table `users_roles`
+--
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-DROP FOREIGN KEY `orders_items_orders_fk`;
-ALTER TABLE `dbinternetshop`.`orders_items`
-DROP INDEX `orders_items_orders_fk_idx` ;
-;
+DROP TABLE IF EXISTS `users_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users_roles` (
+  `users_roles_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) DEFAULT NULL,
+  `role_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`users_roles_id`),
+  KEY `users_roles_users_fk_idx` (`user_id`),
+  KEY `users_roles_roles_fk_idx` (`role_id`),
+  CONSTRAINT `users_roles_roles_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `users_roles_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `dbinternetshop`.`orders`
-CHANGE COLUMN `order_id` `order_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+--
+-- Dumping data for table `users_roles`
+--
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-CHANGE COLUMN `order_id` `order_id` BIGINT(20) NOT NULL ;
+LOCK TABLES `users_roles` WRITE;
+/*!40000 ALTER TABLE `users_roles` DISABLE KEYS */;
+INSERT INTO `users_roles` VALUES (23,39,3),(24,40,2);
+/*!40000 ALTER TABLE `users_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-ADD INDEX `orders_items_orders_fk_idx` (`order_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`orders_items`
-ADD CONSTRAINT `orders_items_orders_fk`
-  FOREIGN KEY (`order_id`)
-  REFERENCES `dbinternetshop`.`orders` (`order_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-ALTER TABLE `dbinternetshop`.`orders_items`
-CHANGE COLUMN `orders_items_id` `orders_items_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `dbinternetshop`.`roles`
-CHANGE COLUMN `role_id` `role_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `dbinternetshop`.`users_roles`
-ADD INDEX `users_roles_roles_fk_idx` (`role_id` ASC) VISIBLE;
-;
-ALTER TABLE `dbinternetshop`.`users_roles`
-ADD CONSTRAINT `users_roles_roles_fk`
-  FOREIGN KEY (`role_id`)
-  REFERENCES `dbinternetshop`.`roles` (`role_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
-ALTER TABLE `dbinternetshop`.`roles`
-CHANGE COLUMN `role_name` `role_name` VARCHAR(255) NOT NULL ;
+-- Dump completed on 2019-10-10 12:45:33
