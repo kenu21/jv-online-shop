@@ -9,12 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.annotations.Inject;
 
 import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.ItemService;
 
 public class DeleteFromBucketController extends HttpServlet {
-
-    @Inject
-    private static ItemService itemService;
 
     @Inject
     private static BucketService bucketService;

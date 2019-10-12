@@ -4,6 +4,6 @@
     <title>Inject</title>
 </head>
 <body>
-<a href="/internet_shop_war_exploded/servlet/getallitems">Go to items</a>
+<a href="/internet_shop_war_exploded/index">Go to index</a>
 </body>
 </html>

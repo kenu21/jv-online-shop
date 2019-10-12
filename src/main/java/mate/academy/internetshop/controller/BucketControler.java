@@ -10,12 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.OrderService;
 
 public class BucketControler extends HttpServlet {
-
-    @Inject
-    private static OrderService orderService;
 
     @Inject
     private static BucketService bucketService;

@@ -1,4 +1,4 @@
-package mate.academy.internetshop.web.filters;
+package mate.academy.internetshop.filters;
 
 import java.io.IOException;
 import java.util.Optional;

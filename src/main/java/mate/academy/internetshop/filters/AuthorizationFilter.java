@@ -1,4 +1,4 @@
-package mate.academy.internetshop.web.filters;
+package mate.academy.internetshop.filters;
 
 import static mate.academy.internetshop.model.Role.RoleName.ADMIN;
 import static mate.academy.internetshop.model.Role.RoleName.USER;

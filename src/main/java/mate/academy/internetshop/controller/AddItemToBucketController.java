@@ -8,19 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.OrderService;
-import mate.academy.internetshop.service.UserService;
 
 public class AddItemToBucketController extends HttpServlet {
 
     @Inject
     static BucketService bucketService;
-
-    @Inject
-    static UserService userService;
-
-    @Inject
-    static OrderService orderService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
