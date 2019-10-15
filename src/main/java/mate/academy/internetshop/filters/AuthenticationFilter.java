@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 public class AuthenticationFilter implements Filter {
     private static final Logger logger = Logger.getLogger(AuthenticationFilter.class);
+    private static final String COOKIE = "MATE";
 
     @Inject
     private static UserService userService;
@@ -37,7 +38,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         for (Cookie cookie : req.getCookies()) {
-            if (cookie.getName().equals("MATE")) {
+            if (cookie.getName().equals(COOKIE)) {
                 Optional<User> user = userService.getByToken(cookie.getValue());
                 if (user.isPresent()) {
                     logger.info("User " + user.get().getLogin() + " was authenticated");

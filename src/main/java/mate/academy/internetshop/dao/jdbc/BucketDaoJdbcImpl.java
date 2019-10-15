@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 @Dao
 public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao {
-    private static final Logger logger = Logger.getLogger(UserDaoJdbcImpl.class);
+    private static final Logger logger = Logger.getLogger(BucketDaoJdbcImpl.class);
 
     public BucketDaoJdbcImpl(Connection connection) {
         super(connection);

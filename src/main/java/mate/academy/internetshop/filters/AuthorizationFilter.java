@@ -36,7 +36,6 @@ public class AuthorizationFilter implements Filter {
         protectedUrls.put("/servlet/getallorders", USER);
         protectedUrls.put("/servlet/buy", USER);
         protectedUrls.put("/servlet/delete", USER);
-        protectedUrls.put("/servlet/delete", USER);
         protectedUrls.put("/servlet/bucket", USER);
         protectedUrls.put("/servlet/completeorder", USER);
         protectedUrls.put("/servlet/deleteorder", USER);

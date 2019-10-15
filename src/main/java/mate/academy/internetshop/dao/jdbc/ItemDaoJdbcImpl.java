@@ -52,13 +52,8 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
             statement = connection.prepareStatement(query);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Long itemId = resultSet.getLong("item_id");
-                String name = resultSet.getString("name");
-                Double price = resultSet.getDouble("price");
-                item = new Item(name, price);
-                item.setId(itemId);
-            }
+            List<Item> list = createListItemFromResultSet(resultSet);
+            return list.get(0);
         } catch (SQLException e) {
             logger.warn("Can't get item by id=" + id);
         } finally {
@@ -128,14 +123,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try {
             statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Long itemId = resultSet.getLong("item_id");
-                String name = resultSet.getString("name");
-                Double price = resultSet.getDouble("price");
-                Item item = new Item(name, price);
-                item.setId(itemId);
-                list.add(item);
-            }
+            list = createListItemFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.warn("Can't get list", e);
         } finally {
@@ -148,5 +136,23 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
             }
         }
         return list;
+    }
+
+    private List<Item> createListItemFromResultSet(ResultSet resultSet) {
+        List<Item> list = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                Long itemId = resultSet.getLong("item_id");
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
+                Item item = new Item(name, price);
+                item.setId(itemId);
+                list.add(item);
+            }
+            return list;
+        } catch (SQLException e) {
+            logger.warn("Can't createItemFromResultSet", e);
+            return list;
+        }
     }
 }

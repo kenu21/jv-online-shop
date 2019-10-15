@@ -23,6 +23,7 @@ public class BucketControler extends HttpServlet {
         List<Item> allOrdersForUser = bucketService.getAllItems(
                 bucketService.getByUserId(userId).getId());
         req.setAttribute("orders", allOrdersForUser);
+
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
     }
 }

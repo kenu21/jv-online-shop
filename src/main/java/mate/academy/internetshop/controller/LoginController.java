@@ -43,7 +43,7 @@ public class LoginController extends HttpServlet {
 
             resp.sendRedirect(req.getContextPath() + "/index");
         } catch (AuthenticationException e) {
-            logger.info("Authentication has failed " + "login = " + login);
+            logger.error("Authentication has failed " + "login = " + login);
             req.setAttribute("errorMsg", "Incorrect login or password");
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
         }
