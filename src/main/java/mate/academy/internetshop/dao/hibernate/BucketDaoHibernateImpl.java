@@ -26,7 +26,9 @@ public class BucketDaoHibernateImpl implements BucketDao {
     public Bucket create(Bucket bucket) {
         Long bucketId = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             bucketId = (Long) session.save(bucket);
             transaction.commit();
@@ -34,6 +36,10 @@ public class BucketDaoHibernateImpl implements BucketDao {
             logger.error("Can't create Bucket " + bucket, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         bucket.setId(bucketId);
@@ -51,7 +57,9 @@ public class BucketDaoHibernateImpl implements BucketDao {
     @Override
     public Bucket update(Bucket bucket) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(bucket);
             transaction.commit();
@@ -59,6 +67,10 @@ public class BucketDaoHibernateImpl implements BucketDao {
             logger.error("Can't update Bucket " + bucket, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         return bucket;

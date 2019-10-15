@@ -28,7 +28,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public User create(User userDao) {
         Long userId = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             String hashPsw = HashUtil.hashPassword(userDao.getPassword(), userDao.getSalt());
             userDao.setPassword(hashPsw);
@@ -38,6 +40,10 @@ public class UserDaoHibernateImpl implements UserDao {
             logger.error("Can't create User " + userDao, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         userDao.setId(userId);
@@ -58,7 +64,9 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public User update(User userDao) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(userDao);
             transaction.commit();
@@ -66,6 +74,10 @@ public class UserDaoHibernateImpl implements UserDao {
             logger.error("Can't update User " + userDao, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         return userDao;
@@ -104,19 +116,18 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public User login(String login, String psw)
             throws AuthenticationException {
-        User user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("FROM User WHERE login=:login");
             query.setParameter("login", login);
-            user = (User) query.uniqueResult();
+            User user = (User) query.uniqueResult();
+            if (user == null) {
+                throw new AuthenticationException("incorrect username or password");
+            }
             if (user.getPassword().equals(HashUtil.hashPassword(psw, user.getSalt()))) {
                 return user;
             }
         }
-        if (user == null) {
-            throw new AuthenticationException("incorrect username or password");
-        }
-        return user;
+        throw new AuthenticationException("incorrect username or password");
     }
 
     @Override

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LogoutController extends HttpServlet {
+    private static final int MIN_AGE_COOKIE = 0;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -16,7 +18,7 @@ public class LogoutController extends HttpServlet {
         for (Cookie cookie : req.getCookies()) {
             if (cookie.getName().equals("MATE")) {
                 cookie.setValue(null);
-                cookie.setMaxAge(0);
+                cookie.setMaxAge(MIN_AGE_COOKIE);
                 resp.addCookie(cookie);
             }
         }

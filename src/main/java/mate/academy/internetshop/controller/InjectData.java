@@ -50,6 +50,6 @@ public class InjectData extends HttpServlet {
 
         bucketService.create(bucket);
 
-        req.getRequestDispatcher("/WEB-INF/views/inject.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/index");
     }
 }

@@ -124,7 +124,7 @@
 
     <filter>
         <filter-name>authfilter</filter-name>
-        <filter-class>mate.academy.internetshop.web.filters.AuthenticationFilter</filter-class>
+        <filter-class>mate.academy.internetshop.filters.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authfilter</filter-name>
@@ -133,7 +133,7 @@
 
     <filter>
         <filter-name>authorizationfilter</filter-name>
-        <filter-class>mate.academy.internetshop.web.filters.AuthorizationFilter</filter-class>
+        <filter-class>mate.academy.internetshop.filters.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authorizationfilter</filter-name>

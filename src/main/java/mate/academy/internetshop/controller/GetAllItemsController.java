@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.annotations.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
-import mate.academy.internetshop.service.UserService;
 
 public class GetAllItemsController extends HttpServlet {
 
     @Inject
     private static ItemService itemService;
-
-    @Inject
-    private static UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
