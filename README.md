@@ -63,7 +63,7 @@ In interntetshop.src.main.java.mate.academy.internetshop.Factory class you have 
 
 In interntetshop.src.main.java.resources.hibernate.cfg.xml you have to change user and password for you DB too.
 
-You have to change path in interntetshop.src.main.webapp.WEB-INF.classes.log4j.properties for your logFile.
+You have to change path in interntetshop.src.main.java.resources.log4j.properties for your logFile.
 
 You can run this project.
 
@@ -71,4 +71,4 @@ By default you have user with role USER (login = 1, password = 1) and user with 
 <hr>
 
 # <a name="authors"></a>Authors
-* https://github.com/kenu21
+* [Iurii](https://github.com/kenu21)

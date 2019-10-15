@@ -47,7 +47,6 @@ public class InjectData extends HttpServlet {
         userService.create(admin);
 
         Bucket bucket = new Bucket(vasya.getId());
-
         bucketService.create(bucket);
 
         resp.sendRedirect(req.getContextPath() + "/index");
