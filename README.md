@@ -1,4 +1,4 @@
-# Inernet-shop
+# Internet-shop
 ![Internet-shop](/images/internetShop.jpg)
 
 # Table of Contents
@@ -59,7 +59,7 @@ Create schema "dbinternetshop".
 
 Use file interntetshop.src.main.java.resources.init_db.sql for create all needed tables.
 
-In interntetshop.src.main.java.mate.academy.internetshop.Factory class you have to change user and password for you DB.
+In interntetshop.src.main.java.Factory class you have to change user and password for you DB.
 
 In interntetshop.src.main.java.resources.hibernate.cfg.xml you have to change user and password for you DB too.
 

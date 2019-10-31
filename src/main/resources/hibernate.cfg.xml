@@ -14,11 +14,11 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="mate.academy.internetshop.model.Item"/>
-        <mapping class="mate.academy.internetshop.model.Role"/>
-        <mapping class="mate.academy.internetshop.model.User"/>
-        <mapping class="mate.academy.internetshop.model.Bucket"/>
-        <mapping class="mate.academy.internetshop.model.Order"/>
+        <mapping class="com.kenu.internetshop.model.Item"/>
+        <mapping class="com.kenu.internetshop.model.Role"/>
+        <mapping class="com.kenu.internetshop.model.User"/>
+        <mapping class="com.kenu.internetshop.model.Bucket"/>
+        <mapping class="com.kenu.internetshop.model.Order"/>
     </session-factory>
 
 </hibernate-configuration>

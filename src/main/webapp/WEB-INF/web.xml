@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>index</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.IndexController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.IndexController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
@@ -15,7 +15,7 @@
 
     <servlet>
         <servlet-name>getallorders</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllOrdersController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.GetAllOrdersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getallorders</servlet-name>
@@ -24,7 +24,7 @@
 
     <servlet>
         <servlet-name>getAllItems</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllItemsController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.GetAllItemsController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getAllItems</servlet-name>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>buy</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.AddItemToBucketController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.AddItemToBucketController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>buy</servlet-name>
@@ -42,7 +42,7 @@
 
     <servlet>
         <servlet-name>delete</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.DeleteFromBucketController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.DeleteFromBucketController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>delete</servlet-name>
@@ -51,7 +51,7 @@
 
     <servlet>
         <servlet-name>bucket</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.BucketControler</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.BucketControler</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>bucket</servlet-name>
@@ -60,7 +60,7 @@
 
     <servlet>
         <servlet-name>completeOrder</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.CompleteOrder</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.CompleteOrder</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>completeOrder</servlet-name>
@@ -69,7 +69,7 @@
 
     <servlet>
         <servlet-name>deleteorder</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.DeleteOrderControler</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.DeleteOrderControler</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>deleteorder</servlet-name>
@@ -78,7 +78,7 @@
 
     <servlet>
         <servlet-name>inject</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.InjectData</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.InjectData</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>inject</servlet-name>
@@ -87,7 +87,7 @@
 
     <servlet>
         <servlet-name>logincontroller</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LoginController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>logincontroller</servlet-name>
@@ -96,7 +96,7 @@
 
     <servlet>
         <servlet-name>getallusers</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllUsersController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.GetAllUsersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getallusers</servlet-name>
@@ -105,7 +105,7 @@
 
     <servlet>
         <servlet-name>registration</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.RegistrationController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.RegistrationController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>registration</servlet-name>
@@ -114,7 +114,7 @@
 
     <servlet>
         <servlet-name>logoutcontroller</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LogoutController</servlet-class>
+        <servlet-class>com.kenu.internetshop.controller.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>logoutcontroller</servlet-name>
@@ -124,7 +124,7 @@
 
     <filter>
         <filter-name>authfilter</filter-name>
-        <filter-class>mate.academy.internetshop.filters.AuthenticationFilter</filter-class>
+        <filter-class>com.kenu.internetshop.filters.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authfilter</filter-name>
@@ -133,7 +133,7 @@
 
     <filter>
         <filter-name>authorizationfilter</filter-name>
-        <filter-class>mate.academy.internetshop.filters.AuthorizationFilter</filter-class>
+        <filter-class>com.kenu.internetshop.filters.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authorizationfilter</filter-name>
@@ -141,7 +141,7 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>mate.academy.internetshop.controller.InjectInitializer</listener-class>
+        <listener-class>com.kenu.internetshop.controller.InjectInitializer</listener-class>
     </listener>
 
 </web-app>
