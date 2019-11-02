@@ -8,27 +8,27 @@
 * [Authors](#authors)
 
 # <a name="purpose"></a>Project purpose
-This App can be used as a basis for creating your own online store.
+This is a template for creating an e-store.
 <hr>
-This web application has forms for registering new users, authentication.
+It has login and registration forms.
 
-There are also controllers for working with items, users, orders and buckets.
+There are controllers for working with items, users, orders and buckets:
 <hr>
-Inject - inject mock data.
+Inject - for injection mock data,
 
-Registration - able to register new user.
+Registration - for registering new users,
 
-Login - user authentication and authorization.
+Login -  for user authentication and authorization,
 
-Users - show all users. Available only for ADMIN role.
+Users - for displaying a list of all app users. Available for users with an ADMIN role only,
 
-Items - show all items.
+Items - for displaying  all items in stock,
 
-Bucket - show bucket for a current user. Available only for USER role.
+Bucket - for displaying  user’s bucket. Available for users with a USER role only,
 
-Orders - show all orders for a current user. Available only for USER role.
+Orders - for displaying user’s order history. Available for users with a USER role only,
 
-Logout - for log out.
+Logout - for logging out.
 <hr>
 
 # <a name="structure"></a>Project Structure
@@ -43,7 +43,7 @@ Logout - for log out.
 
 # <a name="developer-start"></a>For developer
 
-Open this project in your IDE.
+Open the project in your IDE.
 
 Add it as maven project.
 
@@ -51,23 +51,21 @@ Configure Tomcat:
 * add artifact;
 * add sdk 11.0.3
 
-Add sdk 11.0.3 in project strukture.
+Add sdk 11.0.3 in project struсture.
 
-You need sql database.
+Create a schema "dbinternetshop" in any SQL database.
 
-Create schema "dbinternetshop".
+Use file interntetshop.src.main.java.resources.init_db.sql to create all the tables required by this app.
 
-Use file interntetshop.src.main.java.resources.init_db.sql for create all needed tables.
+At interntetshop.src.main.java.Factory class use username and password for your DB to create a Connection.
 
-In interntetshop.src.main.java.Factory class you have to change user and password for you DB.
+At interntetshop.src.main.java.resources.hibernate.cfg.xml configure Hibernate with correct username and password.
 
-In interntetshop.src.main.java.resources.hibernate.cfg.xml you have to change user and password for you DB too.
+Change a path in interntetshop.src.main.java.resources.log4j.properties. It has to reach your logFile.
 
-You have to change path in interntetshop.src.main.java.resources.log4j.properties for your logFile.
+Run the project.
 
-You can run this project.
-
-By default you have user with role USER (login = 1, password = 1) and user with role ADMIN (login = 2, password = 2). 
+By default there’s one user with a USER role (login = 1, password = 1) and one – with an ADMIN role (login = 2, password = 2). 
 <hr>
 
 # <a name="authors"></a>Authors
